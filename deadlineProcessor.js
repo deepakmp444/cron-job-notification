@@ -7,14 +7,21 @@ function getModulesDueToday(environmentModules) {
 
     const modulesDueToday = environmentModules.filter(env => {
         const original = env.DeadlineDay;
-        if (original === null) {
-            env.DeadlineDay = DEFAULT_DAY;
-        } else {
-            env.DeadlineDay = original - 5;
-        }
-
-        console.log(chalk.gray(`🔍 Module: ${env.Module}, Original: ${original}, Adjusted: ${env.DeadlineDay}`));
-        return env.DeadlineDay === today;
+        const deadlineDay = original || DEFAULT_DAY;
+        
+        // Calculate the notification start day (5 days before deadline)
+        const notificationStartDay = deadlineDay - 5;
+        
+        // If notification start day is negative, wrap around to previous month
+        const adjustedStartDay = notificationStartDay <= 0 ? 30 + notificationStartDay : notificationStartDay;
+        
+        console.log(chalk.gray(`🔍 Module: ${env.Module}`));
+        console.log(chalk.gray(`   Deadline Day: ${deadlineDay}`));
+        console.log(chalk.gray(`   Notification Period: ${adjustedStartDay} to ${deadlineDay}`));
+        console.log(chalk.gray(`   Today (${today}) is ${today >= adjustedStartDay && today <= deadlineDay ? 'within' : 'outside'} notification period`));
+        
+        // Return true if today is between notification start day and deadline day
+        return today >= adjustedStartDay && today <= deadlineDay;
     });
 
     return modulesDueToday;

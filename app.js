@@ -3,6 +3,7 @@ const cron = require('node-cron');
 const { connectToDB, closeConnection } = require('./db');
 const { sendEmails } = require('./mailer');
 const { getModulesDueToday } = require('./deadlineProcessor');
+const { CRON_SCHEDULE } = require('./config');
 
 const main = async () => {
     const db = await connectToDB();
@@ -42,9 +43,9 @@ const main = async () => {
     }
 }
 
-// Schedule for 9 AM every day
-cron.schedule('*/30 * * * * *', () => {
-    console.log(chalk.magenta('🔄 Running scheduled task at 9AM...'));
+// Schedule for 12:01 AM every day (configurable via CRON_SCHEDULE env variable)
+cron.schedule(CRON_SCHEDULE, () => {
+    console.log(chalk.magenta(`🔄 Running scheduled task at ${CRON_SCHEDULE}...`));
     main();
 });
 
