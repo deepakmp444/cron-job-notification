@@ -18,14 +18,16 @@ const main = async () => {
             return;
         }
 
+        console.log("setting.Environment", setting.Environment)
         if (!Array.isArray(setting.Environment)) {
             console.log(chalk.red('❌ Environment modules missing in setting.'));
             return;
         }
 
         const emailList = users.map(user => user.EmailID);
+        console.log("emailList", emailList)
         const modulesDueToday = getModulesDueToday(setting.Environment);
-
+        console.log("modulesDueToday", modulesDueToday)
         if (modulesDueToday.length > 0) {
             console.log(chalk.green(`📢 Modules due today: ${modulesDueToday.map(m => m.Module).join(', ')}`));
             sendEmails(emailList, modulesDueToday);
@@ -41,7 +43,7 @@ const main = async () => {
 }
 
 // Schedule for 9 AM every day
-cron.schedule('0 9 * * *', () => {
+cron.schedule('*/30 * * * * *', () => {
     console.log(chalk.magenta('🔄 Running scheduled task at 9AM...'));
     main();
 });

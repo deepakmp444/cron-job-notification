@@ -7,3 +7,5 @@ module.exports = {
     EMAIL_PASS: process.env.EMAIL_PASS,
     DEFAULT_DAY: 15
 };
+
+console.log("email, pass", process.env.EMAIL_USER, process.env.EMAIL_PASS)
