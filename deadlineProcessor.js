@@ -2,9 +2,12 @@ const chalk = require('chalk');
 const { DEFAULT_DAY } = require('./config');
 
 function getModulesDueToday(environmentModules) {
-    const today = new Date();
-    const currentDay = today.getDate();
+    // const today = new Date();
+    // const currentDay = today.getDate();
     
+    // const today = new Date();
+    const currentDay = 1
+
     console.log(chalk.cyan(`📅 Today is: ${currentDay}`));
 
     const modulesDueToday = environmentModules.filter(env => {
